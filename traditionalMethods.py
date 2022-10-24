@@ -193,12 +193,12 @@ def warpDel(im_1, im_2, s_triangles, d_triangles, h_2):
         # cv2.waitKey(50)
         # break
 
-    rec = cv2.boundingRect(np.asarray(h_2))
+    rec = cv2.boundingRect(h_2)
     center = ((rec[0] + int(round(rec[2]/2)), rec[1] + int(round(rec[3]/2))))
     mask = np.zeros((im_2.shape[0], im_2.shape[1]), dtype=np.uint8)
     cv2.fillPoly(mask, [h_2], 255)
     dst = cv2.seamlessClone(im_2, before, mask, center, cv2.NORMAL_CLONE)
-    cv2.imshow("Delaunay Warped", dst)
+    # cv2.imshow("Delaunay Warped", dst)
     # print("Distay..")
     return dst
 
@@ -214,7 +214,8 @@ def delaunayWarp(im_1, im_2, points_1, points_2, hulls_2, warpingMethod, draw):
         lm_points_2.append((int(p[0]), int(p[1])))
     d_triangles = destDelaunayTriangles(rect, lm_points_2, im_2.copy(), draw=False)
     s_triangles = getTrianglesSrc(d_triangles, points_1, lm_points_2, im_1.copy(), draw=False)
-    dest_op = warpDel(im_1, im_2, s_triangles, d_triangles, h_2)
+    dest_op = warpDel(im_1, im_2, s_triangles, d_triangles, np.asarray(h_2))
+    return dest_op
 
 
 def getLHSmat(X,Y):
@@ -289,8 +290,8 @@ def thinplatesplineWarp(im_1, im_2, points_1, points_2, hulls_2, save_flag, warp
     Yparam = yParams(LHSmat, Y_src, lambd)
     #Destination frame mask
     mask = np.zeros((im_2.shape[0], im_2.shape[1]), dtype=np.uint8)
-    print("Hull Conv 2:", hulls_2)
-    abs = cv2.fillPoly(mask, hulls_2, 255)
+    # print("Hull in tps:", hulls_2)
+    cv2.fillPoly(mask, hulls_2, 255)
     # cv2.imshow("mask", abs)
     # cv2.waitKey(0)
     Y, X = np.where(mask==255)
@@ -323,7 +324,7 @@ def traditionalMethods(im_1, im_2, points_1, points_2, hulls_2, mode, save_flag,
     method = method.lower()
     # print(" Traditional method: "+str(method))
     # hulls_1, hulls_2 = hull_lists
-    # print(hull_lists)
+    # print("Hull Dest in trad methods: ", hulls_2)
     if method == 'delaunay':
         # print(" Chosen Method: 'Delaunay' ")
         output = delaunayWarp(im_1, im_2, points_1, points_2, hulls_2, method, draw)

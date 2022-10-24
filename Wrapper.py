@@ -142,10 +142,10 @@ if __name__ == '__main__':
                     else:
                         print(" Total Faces-(Dest Frame) (Not Zero) -->> ", number_of_faces)
                     # hull_lists = [hulls_1, hulls_2]
-                    # print(type(hulls_2))
-                    tradionalOutput = traditionalMethods(image_1, image_2, im_1_pts, im_2_pts, hulls_2[:2], mode, save, method, visualization)
+                    # print("Hull 2 main: ", hulls_2)
+                    tradionalOutput = traditionalMethods(image_1, image_2, im_1_pts, im_2_pts, hulls_2, mode, save, method, visualization)
 
-                cv2.imshow("\n \n Result --->>> ", tradionalOutput)
+                cv2.imshow(" Result --->>> ", tradionalOutput)
                 cv2.waitKey(100)
                 if output:
                     out.write(tradionalOutput)
@@ -190,14 +190,18 @@ if __name__ == '__main__':
                     else:
                         im_1_pts = all_points[0]
                         im_2_pts = all_points[1]
-                        hulls_1, hulls_2 = [], []
-                        for i in range(2):
-                            hull_1 = hull_lists[i]
-                            hull_2 = hull_lists[len(all_points)-1-i]
+                        # hulls_1, hulls_2 = [], []
+                        # for i in range(2):
+                        #     hull_1 = hull_lists[i]
+                        #     hull_2 = hull_lists[len(all_points)-1-i]
                     # hull_lists = [hulls_1, hulls_2]
-                    # print(type(hulls_2))
-                    tradionalOutput = traditionalMethods(image_3, image_3, im_1_pts, im_2_pts, hulls_2, mode, save, method, visualization)
-                cv2.imshow("\n Result --->>> ", output)
+                    # hull_lists = np.asarray(hull_lists)
+                    hull_2 = []
+                    hull_2.append(hull_lists[:2][1])
+                    # print(" Both Convs: ", hull_2)
+                    # print(" Both Convs: ", len(hull_lists))
+                    tradionalOutput = traditionalMethods(image_3, image_3, im_1_pts, im_2_pts, hull_2, mode, save, method, visualization)
+                cv2.imshow(" Result --->>> ", tradionalOutput)
                 cv2.waitKey(100)
                 if output:
                     out.write(out)
