@@ -22,7 +22,7 @@ Graduate Student of M.Eng Robotics at University of Maryland.
 
 
 * Ubuntu 18.04 LTS
-* Modern C++ Programming Language
+* Python 3.10 Programming Language
 * OpenCV Library
 
 ## License 
