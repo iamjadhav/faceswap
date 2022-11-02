@@ -42,7 +42,7 @@ if __name__ == '__main__':
     parser.add_argument('--draw', default=False, type=bool, help='Triangle'
         'Visualization for frames')
 
-    parser.add_argument('--output', default=False, type=bool, help='To save'
+    parser.add_argument('--saveoutput', default=False, type=bool, help='To save'
         'the Output or not')
 
     parser.add_argument('--resize', default=False, type=bool, help='To resize'
@@ -55,9 +55,9 @@ if __name__ == '__main__':
     method = arguments.method
     mode = arguments.mode
     visualization = arguments.draw
-    save = arguments.output
+    save = arguments.saveoutput
     resize = arguments.resize
-    output = arguments.resize
+    # output = arguments.resize
 
     dst_vid_file = os.path.basename(dst_dir)
     # print(dst_vid_file)
@@ -66,6 +66,8 @@ if __name__ == '__main__':
 
     cap = cv2.VideoCapture(dst_dir)
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height =int(cap.get( cv2.CAP_PROP_FRAME_HEIGHT))
     print("\n Total Frames in the Video ----->>>>> " + str(length))
     # print("\n")
 
@@ -75,13 +77,16 @@ if __name__ == '__main__':
     if resize == True:
         # image = imutils.resize(image, width)
         image = resize_(image)
+    # width = int(image.get(cv2.CAP_PROP_FRAME_WIDTH))
+    # height =int(image.get( cv2.CAP_PROP_FRAME_HEIGHT))
     height = image[0]
     width = image[1]
 
-    fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
-    if output:
-        out = cv2.VideoWriter('{}_Output_{}.avi'.format(method, dst_dir),
-                                fourcc, 15, (width, height))
+    # fourcc = cv2.VideoWriter_fourcc('M', 'J', 'P', 'G')
+    if save:
+        # out = cv2.VideoWriter('{}_Output_{}.avi'.format(method, dst_dir),
+        #                         fourcc, 15, (width, height))
+        out = cv2.VideoWriter('{}_Output_{}.avi'.format(method, dst_dir), cv2.VideoWriter_fourcc(*'mp4v'), 15, (width, height))
 
     count = 0
 
@@ -143,12 +148,12 @@ if __name__ == '__main__':
                         print(" Total Faces-(Dest Frame) (Not Zero) -->> ", number_of_faces)
                     # hull_lists = [hulls_1, hulls_2]
                     # print("Hull 2 main: ", hulls_2)
-                    tradionalOutput = traditionalMethods(image_1, image_2, im_1_pts, im_2_pts, hulls_2, mode, save, method, visualization)
+                    output = traditionalMethods(image_1, image_2, im_1_pts, im_2_pts, hulls_2, mode, save, method, visualization)
 
-                cv2.imshow(" Result --->>> ", tradionalOutput)
+                cv2.imshow(" Traditional Mode 1 Result --->>> ", output)
                 cv2.waitKey(100)
-                if output:
-                    out.write(tradionalOutput)
+                if save:
+                    out.write(output)
 
                 if cv2.waitKey(1) & 0xff == ord('q'):
                     cv2.destroyAllWindows()
@@ -190,21 +195,16 @@ if __name__ == '__main__':
                     else:
                         im_1_pts = all_points[0]
                         im_2_pts = all_points[1]
-                        # hulls_1, hulls_2 = [], []
-                        # for i in range(2):
-                        #     hull_1 = hull_lists[i]
-                        #     hull_2 = hull_lists[len(all_points)-1-i]
-                    # hull_lists = [hulls_1, hulls_2]
                     # hull_lists = np.asarray(hull_lists)
                     hull_2 = []
                     hull_2.append(hull_lists[:2][1])
                     # print(" Both Convs: ", hull_2)
                     # print(" Both Convs: ", len(hull_lists))
-                    tradionalOutput = traditionalMethods(image_3, image_3, im_1_pts, im_2_pts, hull_2, mode, save, method, visualization)
-                cv2.imshow(" Result --->>> ", tradionalOutput)
+                    output = traditionalMethods(image_3, image_3, im_1_pts, im_2_pts, hull_2, mode, save, method, visualization)
+                cv2.imshow(" Traditional Mode 2 Result --->>> ", output)
                 cv2.waitKey(100)
-                if output:
-                    out.write(out)
+                if save:
+                    out.write(output)
 
                 if cv2.waitKey(1) & 0xff == ord('q'):
                     cv2.destroyAllWindows()

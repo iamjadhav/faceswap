@@ -124,6 +124,8 @@ def bilinearInterpolation(cor, img):
     sh = np.shape(cor)
     # print("Cor  ",cor)
     # print("Cor shape ",sh)
+    # print("Im shape ",img.shape)
+
     pix_val = np.zeros((sh[1],3))
     cor_xy = cor[:2,:]
 
@@ -155,6 +157,7 @@ def bilinearInterpolation(cor, img):
 
     pix_val[pix_val>255] = 255
     pix_val = pix_val.astype(np.uint8)
+    # print(" Pixel val: ", pix_val.shape)
     return pix_val
 
 
@@ -185,6 +188,7 @@ def warpDel(im_1, im_2, s_triangles, d_triangles, h_2):
         A = np.array([[im_1_corners[0], im_1_corners[2], im_1_corners[4]],[im_1_corners[1], im_1_corners[3], im_1_corners[5]],[1,1,1]])
         im_1_internal_points = np.dot(A, internal_points)
         im_1_internal_points = im_1_internal_points/im_1_internal_points[2]
+
         pixel_values = bilinearInterpolation(im_1_internal_points, im_1)
 
         # bilinear Interpolation

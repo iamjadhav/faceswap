@@ -18,7 +18,7 @@ def prnet_(prn, image, ref_image):
     pos = prn.process(image)
     pos_0 = pos[0]
     pos_refer = pos[1]
-    if pos == None:
+    if pos is None:
         return None, image
     if len(pos) == 2:
         output = prNet(prn, image, ref_image, pos_0, pos_refer, h, w)
